@@ -570,8 +570,11 @@ html,body{margin:0;height:100%;overflow:hidden;background:#FDF2F4}
       restart: (e) => {
         const t = e && e.currentTarget;
         const sc = (t && t.closest && t.closest('.scroller')) || document.querySelector('.scroller');
-        if (sc) { sc.scrollTo({ top: 0, behavior: 'smooth' }); }
-        app.setState({ vis: ',1,' });
+        if (sc) { sc.scrollTop = 0; }
+        clearTimeout(app.openTimer);
+        clearTimeout(app.zoomTimer);
+        if (app.audio) app.audio.pause();
+        app.setState({ step: 0, opened: false, zooming: false, vis: ',1,', playing: false });
       },
       next: () => { if (app.state.step < 5) app.setState({ step: app.state.step + 1 }); },
       prev: () => { if (app.state.step > 1) app.setState({ step: app.state.step - 1 }); }
